@@ -65,8 +65,16 @@
                 template: `
                     <form @submit.prevent="handleSubmit">
                         <h1>{{ title }}</h1>
-                        <custom-input type="email" v-model="email" v-bind:label="emailLabel" />
-                        <custom-input type="password" v-model="password" v-bind:label="passwordLabel" />
+                        <!-- <p v-for="(str, i) in inputs" v-bind:key="i">{{ str }}</p> -->
+                        <custom-input 
+                            v-for="(input, i) in inputs"
+                            v-bind:key="i" 
+                            v-model="input.value" 
+                            v-bind:type="input.type" 
+                            v-bind:label="input.label" 
+
+                        />
+                        <!-- <custom-input type="password" v-model="password" v-bind:label="passwordLabel" /> -->
                         <button type="submit">Log in</button>
                     </form>
                 `,
@@ -74,15 +82,28 @@
                 data() {
                     return {
                         title: 'Login Form',
-                        email: '',
-                        password: '',
+                        // inputs: ['email', 'password', 'name'],
+                        inputs: [
+                            {
+                                label: 'Email',
+                                value: '',
+                                type: 'email'
+                            },
+                            {
+                                label: 'Password',
+                                value: '',
+                                type: 'password'
+                            }
+                        ],
+                        // email: '',
+                        // password: '',
                         emailLabel: 'Email',
                         passwordLabel: 'Password'
                     };
                 },
                 methods: {
                     handleSubmit() {
-                        console.log(this.email, this.password);
+                        console.log(this.inputs[0].value, this.inputs[1].value);
                     }
                 }
             });
@@ -90,10 +111,10 @@
                 template: `
                     <label>
                         {{ label }}
-                        <input type="text" v-model="inputValue"/>
+                        <input v-bind:type="type" v-model="inputValue"/>
                     </label>
                 `,
-                props: ['label', 'modelValue'],
+                props: ['label', 'type', 'modelValue'],
                 computed: {
                     inputValue: {
                         get() {
